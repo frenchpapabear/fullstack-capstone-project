@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const db = await connectToDatabase()
 
         // Task 2: use the collection() method to retrieve the gift collection
-        const collection = db.colleciton("gifts")
+        const collection = db.collection("gifts")
 
         // Task 3: Fetch all gifts using the collection.find method. Chain with toArray method to convert to JSON array
         const gifts = await collection.find({}).toArray()
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
         const db = await connectToDatabase()
 
         // Task 2: use the collection() method to retrieve the gift collection
-        const collection = db.colleciton("gifts")
+        const collection = db.collection("gifts")
 
         const id = req.params.id;
 
