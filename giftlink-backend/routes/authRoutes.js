@@ -83,15 +83,16 @@ router.post('/login', async (req, res) => {
                 },
             };
             const authtoken = jwt.sign(payload, JWT_SECRET);
-            res.json({authtoken, userName, userEmail });
+            logger.info('User logged in successfully');
+            return res.status(200).json({ authtoken, userName, userEmail });
         }else {
             // Task 7: Send appropriate message if user not found
             logger.error('User not found');
             return res.status(404).json({ error: 'User not found' });
         }
     } catch (e) {
-         return res.status(500).send('Internal server error');
-
+        logger.error(e);
+         return res.status(500).json({ error: 'Internal server error', details: e.message });
     }
 });
 
