@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {urlConfig} from '../../config';
 import { useAppContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -23,10 +23,11 @@ function LoginPage() {
     const [password, setPassword] = useState('');
 
     // insert code here to create handleLogin function and include console.log
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
       e.preventDefault();
+      console.log('o')
         try {
-          const res = await fetch(`/api/auth/login`, {
+          const res = await fetch(`${urlConfig.backendUrl}/api/auth/login`, {
             method: 'POST', //Task 7: Set method
             headers: {
               'content-type': 'application/json',
