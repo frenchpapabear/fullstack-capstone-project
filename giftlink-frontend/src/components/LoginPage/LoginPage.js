@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
+import {urlConfig} from '../../config';
+import { useAppContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 import './LoginPage.css';
 
 function LoginPage() {
+
+    const [incorrect, setIncorrect] = useState('');
+    const navigate = useNavigate();
+    const bearerToken = sessionStorage.getItem('bearer-token');
+    const { setIsLoggedIn } = useAppContext();
+
+    useEffect(() => {
+      if (sessionStorage.getItem('auth-token')) {
+        navigate('/app')
+      }
+    }, [navigate])
 
     //insert code here to create useState hook variables for email, password
     const [email, setEmail] = useState('');
@@ -9,7 +24,46 @@ function LoginPage() {
 
     // insert code here to create handleLogin function and include console.log
     const handleLogin = async () => {
-        console.log("Inside handleLogin");
+      e.preventDefault();
+        try {
+          const res = await fetch(`/api/auth/login`, {
+            method: 'POST', //Task 7: Set method
+            headers: {
+              'content-type': 'application/json',
+              'Authorization': bearerToken ? `Bearer ${bearerToken}` : '', // Include Bearer token if available
+            }, //Task 8: Set headers
+            body: JSON.stringify({    
+              email: email,
+              password: password,
+            }) //Task 9: Set body to send user details
+          })
+          // Task 1: Access data coming from fetch API
+          const json = await res.json();
+          
+          if (json.authtoken) {
+            // Task 2: Set user details
+            sessionStorage.setItem('auth-token', json.authtoken);
+            sessionStorage.setItem('name', json.userName);
+            sessionStorage.setItem('email', json.userEmail);
+            // Task 3: Set the user's state to log in using the `useAppContext`.
+            setIsLoggedIn(true);
+            // Task 4: Navigate to the MainPage after logging in.
+            navigate('/app')
+            
+            } else {
+              // Task 5: Clear input and set an error message if the password is incorrect
+              document.getElementById("email").value="";
+              document.getElementById("password").value="";
+              setIncorrect("Wrong password. Try again.");
+              //Below is optional, but recommended - Clear out error message after 2 seconds
+              setTimeout(() => {
+                setIncorrect("");
+              }, 2000);
+            }
+          // Task 6: Display an error message to the user.
+        } catch (e) {
+          console.log("Error fetching details: " + e.message);
+        }
     }
         return (
       <div className="container mt-5">
@@ -40,6 +94,7 @@ function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
+            <span style={{color:'red',height:'.5cm',display:'block',fontStyle:'italic',fontSize:'12px'}}>{incorrect}</span>
         </div>
 
           {/* insert code here to create a button that performs the `handleLogin` function on click */}
