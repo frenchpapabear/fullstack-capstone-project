@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
+import {urlConfig} from '../../config';
+import { useAppContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 import './RegisterPage.css';
 
 function RegisterPage() {
+
+    const [showerr, setShowerr] = useState('');
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useAppContext();
 
     //insert code here to create useState hook variables for firstName, lastName, email, password
     const [firstName, setFirstName] = useState('');
@@ -12,7 +19,39 @@ function RegisterPage() {
 
     // insert code here to create handleRegister function and include console.log
     const handleRegister = async () => {
-        console.log("Register invoked")
+        try {
+            //Step 1: Implement API call
+            const response = await fetch(`${urlConfig.backendUrl}/api/auth/register`, {
+                
+                method: 'POST',//Task 6: Set method
+                headers: {
+                    'content-type': 'application/json',
+                },//Task 7: Set headers
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: password
+                })//Task 8: Set body to send user details
+            });
+            //Step 2: Access data, login, set the AuthContext and set user details
+            const json = await response.json();
+            if (json.authtoken) {
+                sessionStorage.setItem('auth-token', json.authtoken);
+                sessionStorage.setItem('name', firstName);
+                sessionStorage.setItem('email', json.email);
+                //insert code for setting logged in state
+                setIsLoggedIn(true);
+                //insert code for navigating to MainPAge
+                navigate('/app')
+            }
+
+            if (json.error) {
+                setShowerr(json.error);
+            }
+        } catch (e) {
+            console.log("Error fetching details: " + e.message);
+        }
     }
 
          return (
@@ -21,6 +60,7 @@ function RegisterPage() {
                     <div className="col-md-6 col-lg-6">
                         <div className="register-card p-4 border rounded">
                             <h2 className="text-center mb-4 font-weight-bold">Register</h2>
+                            
 
                     {/* insert code here to create input elements for all the variables - firstName, lastName, email, password */}
                     <div className="mb-4">
@@ -55,6 +95,7 @@ function RegisterPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         />
+                        <div className="text-danger">{showerr}</div>
                     </div>
                     <div className="mb-4">
                         <label htmlFor="password" className="form label"> Password</label><br/>
