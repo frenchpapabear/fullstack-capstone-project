@@ -127,6 +127,7 @@ body,
 .navbar-brand, .nav-link {
   font-size: 1.2rem; /* Increase font size */
   font-weight: 500; /* Medium weight for better visibility */
+  padding-left: 5px;
 }
 
 /* Increase the font size and weight of nav-item */
