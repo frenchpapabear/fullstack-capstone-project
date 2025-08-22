@@ -33,6 +33,7 @@ router.get('/', async (req, res, next) => {
 
         res.json(gifts);
     } catch (e) {
+        console.log(e)
         next(e);
     }
 });

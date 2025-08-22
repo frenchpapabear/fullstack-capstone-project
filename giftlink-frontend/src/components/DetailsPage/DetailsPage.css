@@ -5,6 +5,7 @@
     position: relative; /* Task 1: Set position to relative */
     background-color: #f0f0f0; /* Task 1: Placeholder background color */
     /* Additional styles as needed */
+    margin-bottom: 1rem;
 }
 
 /* Style for product image */

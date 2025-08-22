@@ -19,7 +19,6 @@ function SearchPage() {
         const fetchProducts = async () => {
             try {
                 let url = `${urlConfig.backendUrl}/api/gifts`
-                console.log(url)
                 const response = await fetch(url);
                 if (!response.ok) {
                     //something went wrong
@@ -106,7 +105,7 @@ function SearchPage() {
                                 value={ageRange}
                                 onChange={e => setAgeRange(e.target.value)}
                             />
-                      
+                      <hr class="mt-4"></hr>
                     {/* Task 7: Add text input field for search criteria*/}
                     <label htmlFor="searchQuery">Search</label>
                             <input

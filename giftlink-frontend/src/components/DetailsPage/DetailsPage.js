@@ -39,13 +39,19 @@ function DetailsPage() {
 		// Task 3: Scroll to top on component mount
 		window.scrollTo(0, 0)
 
-    }, [productId]);
+    }, [productId, navigate]);
 
 
     const handleBackClick = () => {
 		// Task 4: Handle back click
 		navigate(-1)
 	};
+
+    const formatDate = (timestamp) => {
+        // Write your code below this line
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' });
+      };
 
 	//The comments have been hardcoded for this project.
     const comments = [
@@ -86,27 +92,17 @@ return (
                 <div className="card-body">
                     <div className="image-placeholder-large">
                         {gift.image ? (
-			// Task 5: Display gift image
-			<img src={gift.image} alt={gift.name} className="product-image-large" />
+                            // Task 5: Display gift image
+                            <img src={gift.image} alt={gift.name} className="product-image-large" />
                         ) : (
                             <div className="no-image-available-large">No Image Available</div>
                         )}
                     </div>
-                    	<p><strong>Category:</strong> 
-				{gift.category}
-			</p>
-                    	<p><strong>Condition:</strong> 
-				{gift.condition}
-                    	</p>
-                    	<p><strong>Date Added:</strong> 
-				{gift.date_added}
-                        </p>
-                    	<p><strong>Age (Years):</strong> 
-				{gift.age_years}
-                    	</p>
-                    	<p><strong>Description:</strong> 
-				{gift.description}
-                    	</p>
+                    	<p><strong>Category:</strong> {gift.category}</p>
+                    	<p><strong>Condition:</strong> {gift.condition}</p>
+                    	<p><strong>Date Added:</strong> {formatDate(gift.date_added)}</p>
+                    	<p><strong>Age (Years):</strong> {gift.age_years}</p>
+                    	<p><strong>Description:</strong>  {gift.description}</p>
                 </div>
             </div>
             <div className="comments-section mt-4">

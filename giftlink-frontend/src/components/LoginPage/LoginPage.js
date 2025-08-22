@@ -25,7 +25,6 @@ function LoginPage() {
     // insert code here to create handleLogin function and include console.log
     const handleLogin = async (e) => {
       e.preventDefault();
-      console.log('o')
         try {
           const res = await fetch(`${urlConfig.backendUrl}/api/auth/login`, {
             method: 'POST', //Task 7: Set method
